@@ -10,8 +10,36 @@ export default function Services({ onOpenQuote }) {
   const { pageSections } = useCms();
   const heroSec = pageSections?.['services.hero'];
   const ctaSec = pageSections?.['services.cta'];
-  const heroImg = heroSec?.image_url || '/images/services-hero-tanker.jpg';
+  const heroImg = heroSec?.image_url || '/images/services-hero-panoramic-clean.jpg';
   const ctaImg = ctaSec?.image_url || '/images/cta-skyline-clean.jpg';
+
+  const formatHeroTitle = (title) => {
+    const raw = title || 'Our Fuel Supply Services';
+    if (raw.toLowerCase().includes('services')) {
+      const idx = raw.toLowerCase().lastIndexOf('services');
+      const prefix = raw.substring(0, idx).trim();
+      const suffix = raw.substring(idx).trim();
+      return (
+        <>
+          <span className="text-navy">{prefix}</span>
+          <br />
+          <span className="text-red">{suffix}</span>
+        </>
+      );
+    }
+    const words = raw.trim().split(' ');
+    if (words.length > 1) {
+      const last = words.pop();
+      return (
+        <>
+          <span className="text-navy">{words.join(' ')}</span>
+          <br />
+          <span className="text-red">{last}</span>
+        </>
+      );
+    }
+    return <span className="text-navy">{raw}</span>;
+  };
 
   useEffect(() => {
     document.title = 'Our Services | Dubai Diesel Trading LLC — UAE Fuel Supply Partner';
@@ -136,30 +164,22 @@ export default function Services({ onOpenQuote }) {
         </div>
 
           <div className="container srv-hero-container">
-            <nav className="abp-breadcrumb hero-eyebrow" aria-label="Breadcrumb">
+            <nav className="abp-breadcrumb srv-breadcrumb" aria-label="Breadcrumb">
               <Link to="/" className="abp-crumb-home">Home</Link>
               <span aria-hidden="true" className="abp-crumb-sep">&rsaquo;</span>
-              <span>Our Services</span>
+              <span className="abp-crumb-curr">Our Services</span>
             </nav>
 
             <div className="srv-hero-content">
-              <div className="srv-hero-eyebrow">
-                <span className="srv-eyebrow-dash" aria-hidden="true"></span>
-                <h1 className="srv-eyebrow-text">
-                  {heroSec?.title ? (
-                    heroSec.title
-                  ) : (
-                    <>
-                      <span className="text-navy">Our </span>
-                      <span className="text-red">Services</span>
-                    </>
-                  )}
+              <div className="srv-hero-heading-row">
+                <span className="srv-title-dash" aria-hidden="true"></span>
+                <h1 className="srv-hero-title">
+                  {formatHeroTitle(heroSec?.title)}
                 </h1>
-                <span className="srv-eyebrow-dash" aria-hidden="true"></span>
               </div>
 
               <p className="srv-hero-sub">
-                {heroSec?.subtitle || 'End-to-end fuel trading and supply solutions for a stronger, more efficient UAE.'}
+                {heroSec?.subtitle || 'Comprehensive fuel trading, bunkering, and dedicated storage solutions for mission-critical industries in the UAE.'}
               </p>
 
               <button
