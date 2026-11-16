@@ -1,0 +1,117 @@
+export const searchCatalog = [
+  { category: 'Company', title: 'About Dubai Diesel Trading LLC', href: '/about' },
+  { category: 'Compliance', title: 'ISO 9001, 14001 & 45001 Certifications', href: '/about#certifications' },
+  { category: 'Product', title: 'Ultra Low Sulfur Diesel (10ppm)', href: '/services', productKey: 'Ultra Low Sulfur Diesel (10ppm)' },
+  { category: 'Product', title: 'Industrial Gas Oil', href: '/services', productKey: 'Industrial Gas Oil' },
+  { category: 'Product', title: 'Marine Gas Oil (MGO)', href: '/services', productKey: 'Marine Gas Oil (MGO)' },
+  { category: 'Product', title: 'AdBlue & Fleet Lubricants', href: '/services', productKey: 'AdBlue & Fleet Lubricants' },
+  { category: 'Service', title: 'Bulk Fuel Delivery', href: '/services', productKey: 'Bulk Fuel Supply' },
+  { category: 'Service', title: 'Diesel Supply', href: '/services', productKey: 'Diesel Supply' },
+  { category: 'Service', title: 'Industrial Fuel', href: '/services', productKey: 'Industrial Fuel' },
+  { category: 'Service', title: 'Marine Fuel', href: '/services', productKey: 'Marine Fuel' },
+  { category: 'Service', title: 'Generator Fuel', href: '/services', productKey: 'Generator Fuel' },
+  { category: 'Service', title: 'Bulk Fuel Supply', href: '/services', productKey: 'Bulk Fuel Supply' },
+  { category: 'Service', title: '24/7 Fleet Refueling', href: '/services', productKey: '24/7 Fleet Refueling' },
+  { category: 'Sector', title: 'Construction & Infrastructure', href: '/industries' },
+  { category: 'Sector', title: 'Manufacturing & Warehousing', href: '/industries' },
+  { category: 'Sector', title: 'Logistics & Heavy Transport', href: '/industries' },
+  { category: 'Sector', title: 'Power Generation', href: '/industries' },
+  { category: 'Sector', title: 'Marine & Port Operations', href: '/industries' },
+];
+
+export const servicesData = [
+  {
+    id: 'diesel-supply',
+    title: 'Diesel Supply',
+    desc: 'High-quality diesel (EN 590) for commercial and industrial use.',
+    image: '/images/service-diesel.jpg',
+    theme: 'svc-theme-red',
+    productKey: 'Ultra Low Sulfur Diesel (10ppm)',
+  },
+  {
+    id: 'industrial-fuel',
+    title: 'Industrial Fuel',
+    desc: 'Reliable fuel supply for industrial operations and heavy equipment.',
+    image: '/images/service-industrial.jpg',
+    theme: 'svc-theme-navy',
+    productKey: 'Industrial Gas Oil',
+  },
+  {
+    id: 'marine-fuel',
+    title: 'Marine Fuel',
+    desc: 'Bunkering and marine fuel solutions for vessels and port operations.',
+    image: '/images/service-marine.jpg',
+    theme: 'svc-theme-red',
+    productKey: 'Marine Gas Oil (MGO)',
+  },
+  {
+    id: 'generator-fuel',
+    title: 'Generator Fuel',
+    desc: 'Dedicated fuel supply for commercial generators and backup systems.',
+    image: '/images/service-generator.jpg',
+    theme: 'svc-theme-navy',
+    productKey: 'Ultra Low Sulfur Diesel (10ppm)',
+  },
+  {
+    id: 'bulk-fuel-supply',
+    title: 'Bulk Fuel Supply',
+    desc: 'Large-scale fuel supply and storage solutions for high-demand operations.',
+    image: '/images/service-bulk.jpg',
+    theme: 'svc-theme-red',
+    productKey: 'Bulk Fuel Supply',
+  },
+  {
+    id: 'storage-distribution',
+    title: 'Fuel Storage & Distribution',
+    desc: 'Safe, certified, and efficient bulk storage and regional distribution solutions.',
+    image: '/images/service-card-storage-exact.jpg',
+    theme: 'svc-theme-navy',
+    productKey: 'Bulk Fuel Supply',
+  },
+];
+
+export const sectorsData = [
+  {
+    id: 'construction',
+    title: 'Construction & Infrastructure',
+    desc: 'Supplying heavy equipment, earthmovers, tower cranes, and site power generation across UAE mega-projects.',
+    image: '/images/industry-construction.jpg',
+  },
+  {
+    id: 'manufacturing',
+    title: 'Manufacturing & Warehousing',
+    desc: 'Uninterrupted fuel supply for production plants, boiler systems, forklifts, and factory facilities.',
+    image: '/images/industry-manufacturing.jpg',
+  },
+  {
+    id: 'logistics',
+    title: 'Logistics & Heavy Transport',
+    desc: 'Fleet bunkering and dedicated yard refueling keeping distribution networks rolling 24/7.',
+    image: '/images/service-diesel.jpg',
+  },
+  {
+    id: 'power',
+    title: 'Power Generation',
+    desc: 'High-spec low-sulfur diesel delivery for primary and standby backup generator infrastructure.',
+    image: '/images/service-generator.jpg',
+  },
+  {
+    id: 'marine',
+    title: 'Marine & Port Operations',
+    desc: 'Offshore supply, tugboat refueling, port logistics, and marine gas oil distribution.',
+    image: '/images/industry-oil-gas.jpg',
+  },
+];
+
+export const clientsData = [
+  { name: 'EMAAR', sub: 'PROPERTIES', desc: 'Premier UAE Developer' },
+  { name: 'ALEC', sub: 'ENGINEERING', desc: 'Main Contracting' },
+  { name: 'NAKHEEL', sub: 'DEVELOPMENTS', desc: 'Master Developer' },
+  { name: 'DP WORLD', sub: 'PORTS & LOGISTICS', desc: 'Global Logistics' },
+  { name: 'ADNOC', sub: 'DISTRIBUTION', desc: 'Energy Partner' },
+  { name: 'DUBAI MUNICIPALITY', sub: 'GOVERNMENT', desc: 'Civic Infrastructure' },
+  { name: 'JAFZA', sub: 'FREE ZONE', desc: 'Industrial Logistics' },
+  { name: 'DEWA', sub: 'ENERGY & WATER', desc: 'Utility Infrastructure' },
+  { name: 'RTA DUBAI', sub: 'TRANSPORT', desc: 'Transit Infrastructure' },
+  { name: 'ENOC', sub: 'ENERGY GROUP', desc: 'National Oil Company' },
+];
