@@ -387,12 +387,16 @@ button {
 }
 
 .mobile-drawer {
-  padding: 12px 24px 20px;
+  padding: 14px 20px 24px;
   background: #ffffff;
   border-top: 1px solid #f1f5f9;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  max-height: calc(100vh - 74px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 16px 36px rgba(10, 34, 70, 0.12);
 }
 
 .mobile-drawer[hidden] {
@@ -2252,13 +2256,15 @@ button {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 100;
-  background: rgba(7, 25, 54, 0.7);
+  z-index: 2000000;
+  background: rgba(7, 25, 54, 0.75);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: clamp(12px, 3vw, 24px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-backdrop[hidden] {
@@ -2267,20 +2273,41 @@ button {
 
 .search-backdrop {
   align-items: flex-start;
-  padding-top: 84px;
+  padding-top: clamp(60px, 12vh, 100px);
 }
 
-.modal-card,
-.search-card {
+.modal-card {
   width: 100%;
   max-width: 540px;
+  max-height: min(92vh, 760px);
+  display: flex;
+  flex-direction: column;
   background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 24px 60px rgba(7, 25, 54, 0.3);
+  box-shadow: 0 24px 60px rgba(7, 25, 54, 0.35);
+  position: relative;
+  z-index: 2000001;
+  margin: auto;
+}
+
+.search-card {
+  width: 100%;
+  max-width: 580px;
+  max-height: min(88vh, 640px);
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(7, 25, 54, 0.35);
+  position: relative;
+  z-index: 2000001;
+  margin: auto;
 }
 
 .modal-header {
+  flex-shrink: 0;
   background: #092248;
   color: #ffffff;
   padding: 16px 22px;
@@ -2326,6 +2353,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .form-row {
@@ -2436,6 +2465,24 @@ button {
 }
 
 /* ---------------- RESPONSIVE BREAKPOINTS ---------------- */
+/* Laptop / Narrow Desktop Navigation Adaptation (1081px - 1260px) */
+@media (min-width: 1081px) and (max-width: 1260px) {
+  .main-nav,
+  .desktop-nav {
+    gap: 14px;
+  }
+  .nav-link {
+    font-size: 13.5px;
+  }
+  .btn-quote {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  .header-actions {
+    gap: 10px;
+  }
+}
+
 @media (max-width: 1080px) {
   .main-nav,
   .desktop-nav,
@@ -2815,6 +2862,24 @@ button {
   .hero-ctas .btn-secondary {
     padding: 9px 14px;
     font-size: 12.5px;
+  }
+
+  .modal-backdrop {
+    padding: 10px;
+  }
+
+  .modal-card {
+    max-height: 94vh;
+  }
+
+  .modal-body {
+    padding: 16px 14px;
+    gap: 12px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 }
 
