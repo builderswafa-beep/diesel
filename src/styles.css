@@ -5606,36 +5606,7 @@ html.has-reveal .reveal-on-scroll.reveal-done {
 }
 
 
-/* Footer Tank Graphic (Seamlessly Blended Corner Accent with Low Opacity) */
-.footer-tank-graphic {
-  position: absolute;
-  right: 16px;
-  bottom: 48px;
-  width: clamp(260px, 23vw, 400px);
-  pointer-events: none;
-  z-index: 2;
-  display: block;
-  opacity: 0.22;
-  /* Smooth radial feather fade across the left, top, and outer boundaries */
-  mask-image: radial-gradient(ellipse 90% 80% at 85% 75%, #000000 30%, rgba(0, 0, 0, 0.55) 60%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 85% 75%, #000000 30%, rgba(0, 0, 0, 0.55) 60%, transparent 100%);
-}
 
-.footer-tank-graphic img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-  object-position: right bottom;
-  filter: contrast(1.05) saturate(1.05);
-  image-rendering: -webkit-optimize-contrast;
-}
-
-@media (max-width: 1024px) {
-  .footer-tank-graphic {
-    display: none;
-  }
-}
 
 
 /* ==========================================================================

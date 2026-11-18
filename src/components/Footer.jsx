@@ -62,7 +62,6 @@ export default function Footer({ onOpenQuote }) {
   const quickHeading = settings?.footer_quick_heading || 'Quick Links';
   const servicesHeading = settings?.footer_services_heading || 'Our Services';
   const contactHeading = settings?.footer_contact_heading || 'Contact Info';
-  const terminalImage = settings?.footer_image_url || '/images/footer-terminal-exact.png';
   const quickLinks = parseLinks(settings?.footer_quick_links, DEFAULT_QUICK_LINKS);
   const serviceLinks = parseLinks(settings?.footer_service_links, DEFAULT_SERVICE_LINKS);
   const legalLinks = parseLinks(settings?.footer_legal_links, DEFAULT_LEGAL_LINKS);
@@ -250,13 +249,6 @@ export default function Footer({ onOpenQuote }) {
           </div>
         </div>
       </div>
-
-      {/* Footer Right Terminal Tank Graphic from Mockup - Seamlessly Blended */}
-      {terminalImage && (
-        <div className="footer-tank-graphic" aria-hidden="true">
-          <img src={terminalImage} alt="Dubai Diesel Storage Terminal" />
-        </div>
-      )}
 
       {/* Dark Midnight Bottom Copyright & Legal Bar */}
       <div className="footer-bottom-bar">
