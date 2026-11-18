@@ -2,9 +2,81 @@
 import React, { useState } from 'react';
 import { useCms } from '../../context/CmsContext';
 import { useAuth } from '../../context/AuthContext';
+import ImageUploadControl from '../components/ImageUploadControl';
+
+function LinkListEditor({ label, value, onChange, helpText }) {
+  let links = [];
+  try {
+    const parsed = typeof value === 'string' ? JSON.parse(value) : value;
+    if (Array.isArray(parsed)) links = parsed;
+  } catch {
+    links = [];
+  }
+
+  const update = (next) => onChange(JSON.stringify(next));
+
+  const handleItemChange = (index, field, newValue) => {
+    update(
+      links.map((item, i) => (i === index ? { ...item, [field]: newValue } : item))
+    );
+  };
+
+  return (
+    <div style={{ marginBottom: '18px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+        <label className="adm-form-label" style={{ marginBottom: 0 }}>{label}</label>
+        <button
+          type="button"
+          className="adm-btn-primary"
+          style={{ padding: '7px 12px', fontSize: '12px' }}
+          onClick={() => update([...links, { label: '', url: '/' }])}
+        >
+          + Add Link
+        </button>
+      </div>
+      {helpText && (
+        <small style={{ color: '#64748B', fontSize: '12px', marginBottom: '10px', display: 'block' }}>
+          {helpText}
+        </small>
+      )}
+      {links.map((link, index) => (
+        <div
+          key={index}
+          style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.4fr) auto', gap: '8px', marginBottom: '8px', alignItems: 'center' }}
+        >
+          <input
+            type="text"
+            className="adm-input"
+            placeholder="Link text"
+            value={link.label || ''}
+            onChange={(e) => handleItemChange(index, 'label', e.target.value)}
+          />
+          <input
+            type="text"
+            className="adm-input"
+            placeholder="/page, #section or https://..."
+            value={link.url || ''}
+            onChange={(e) => handleItemChange(index, 'url', e.target.value)}
+          />
+          <button
+            type="button"
+            onClick={() => update(links.filter((_, i) => i !== index))}
+            style={{ background: 'transparent', border: 'none', color: '#DC2626', fontSize: '12px', fontWeight: '700', cursor: 'pointer', padding: '6px' }}
+            title="Remove this link"
+          >
+            Remove
+          </button>
+        </div>
+      ))}
+      {links.length === 0 && (
+        <p style={{ color: '#94A3B8', fontSize: '12px', margin: '4px 0 0 0' }}>No links yet. Click "+ Add Link" to create one.</p>
+      )}
+    </div>
+  );
+}
 
 export default function SettingsManager() {
-  const { settings, saveSettings } = useCms();
+  const { settings, saveSettings, media, uploadImage } = useCms();
   const { user } = useAuth();
 
   const [formData, setFormData] = useState({ ...settings });
@@ -58,6 +130,13 @@ export default function SettingsManager() {
           onClick={() => setActiveTab('branding')}
         >
           Branding &amp; Footer
+        </button>
+        <button
+          type="button"
+          className={`adm-tab-btn ${activeTab === 'footer' ? 'active' : ''}`}
+          onClick={() => setActiveTab('footer')}
+        >
+          Footer Content
         </button>
         <button
           type="button"
@@ -140,12 +219,27 @@ export default function SettingsManager() {
                     placeholder="Dubai, United Arab Emirates"
                   />
                 </div>
+
+                <div className="adm-form-group">
+                  <label className="adm-form-label">Google Maps Embed URL (Iframe Link)</label>
+                  <input
+                    type="text"
+                    name="map_embed_url"
+                    className="adm-input"
+                    value={formData.map_embed_url || ''}
+                    onChange={handleChange}
+                    placeholder="https://maps.google.com/maps?q=Dubai%2C+United+Arab+Emirates&output=embed"
+                  />
+                  <small style={{ color: '#64748B', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                    Leave blank to use the default Dubai Diesel Trading L.L.C., Dubai location map.
+                  </small>
+                </div>
               </div>
             )}
 
             {activeTab === 'branding' && (
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#0A2246', marginBottom: '16px' }}>Company Identity &amp; Footer</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#0A2246', marginBottom: '16px' }}>Company Identity</h3>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div className="adm-form-group">
@@ -170,6 +264,91 @@ export default function SettingsManager() {
                     />
                   </div>
                 </div>
+              </div>
+            )}
+
+            {activeTab === 'footer' && (
+              <div>
+                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#0A2246', marginBottom: '6px' }}>Footer Content</h3>
+                <p style={{ color: '#64748B', fontSize: '12.5px', marginBottom: '18px' }}>
+                  Every field here updates the live website footer. Social icon links are managed in the
+                  Social &amp; WhatsApp tab, and contact details in the Contact &amp; Location tab.
+                </p>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Brand Name (Arabic)</label>
+                    <input
+                      type="text"
+                      name="footer_brand_arabic"
+                      className="adm-input"
+                      value={formData.footer_brand_arabic || ''}
+                      onChange={handleChange}
+                      dir="rtl"
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Brand Name (English)</label>
+                    <input
+                      type="text"
+                      name="footer_brand_name"
+                      className="adm-input"
+                      value={formData.footer_brand_name || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Brand Subtitle</label>
+                    <input
+                      type="text"
+                      name="footer_brand_subtitle"
+                      className="adm-input"
+                      value={formData.footer_brand_subtitle || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Column Heading: Quick Links</label>
+                    <input
+                      type="text"
+                      name="footer_quick_heading"
+                      className="adm-input"
+                      value={formData.footer_quick_heading || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Column Heading: Services</label>
+                    <input
+                      type="text"
+                      name="footer_services_heading"
+                      className="adm-input"
+                      value={formData.footer_services_heading || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label className="adm-form-label">Column Heading: Contact Info</label>
+                    <input
+                      type="text"
+                      name="footer_contact_heading"
+                      className="adm-input"
+                      value={formData.footer_contact_heading || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="adm-form-group">
+                  <label className="adm-form-label">Footer Description</label>
+                  <textarea
+                    name="footer_description"
+                    className="adm-textarea"
+                    rows={3}
+                    value={formData.footer_description || ''}
+                    onChange={handleChange}
+                  />
+                </div>
 
                 <div className="adm-form-group">
                   <label className="adm-form-label">Footer Copyright Notice</label>
@@ -181,6 +360,33 @@ export default function SettingsManager() {
                     onChange={handleChange}
                   />
                 </div>
+
+                <ImageUploadControl
+                  label="Footer Terminal Image"
+                  value={formData.footer_image_url || ''}
+                  onChange={(url) => setFormData((prev) => ({ ...prev, footer_image_url: url }))}
+                  media={media}
+                  uploadImage={uploadImage}
+                  userName={user?.full_name}
+                  helpText="Decorative image shown on the right side of the footer. Leave empty to hide it."
+                />
+
+                <LinkListEditor
+                  label="Quick Links"
+                  value={formData.footer_quick_links}
+                  onChange={(value) => setFormData((prev) => ({ ...prev, footer_quick_links: value }))}
+                  helpText="Use /path for internal pages, #section for on-page anchors, or a full https:// URL for external sites."
+                />
+                <LinkListEditor
+                  label="Our Services Links"
+                  value={formData.footer_service_links}
+                  onChange={(value) => setFormData((prev) => ({ ...prev, footer_service_links: value }))}
+                />
+                <LinkListEditor
+                  label="Bottom Legal Links"
+                  value={formData.footer_legal_links}
+                  onChange={(value) => setFormData((prev) => ({ ...prev, footer_legal_links: value }))}
+                />
               </div>
             )}
 

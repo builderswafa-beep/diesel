@@ -1,0 +1,23 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Allow existing files and directories to be served directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Don't rewrite API requests to index.html
+  RewriteRule ^api/ - [L]
+
+  # Rewrite all other URLs to index.html for React Router client-side routing
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Optional security and caching headers
+<IfModule mod_headers.c>
+  # Prevent MIME type sniffing
+  Header set X-Content-Type-Options "nosniff"
+  # Enable XSS protection
+  Header set X-XSS-Protection "1; mode=block"
+</IfModule>

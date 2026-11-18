@@ -125,15 +125,60 @@ export default function Projects({ onOpenQuote }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  // Robust category matching supporting CMS keys ('power' vs 'power-generation', 'marine' vs 'marine-shipping')
+  const matchesCategory = (project, filterId) => {
+    if (!filterId || filterId === 'all') return true;
+    const catKey = (project.categoryKey || project.category_key || '').toLowerCase().trim();
+    const catLabel = (project.categoryLabel || project.category_label || '').toLowerCase().trim();
+    const target = filterId.toLowerCase().trim();
+
+    if (catKey === target || catLabel === target) return true;
+
+    // Power Generation aliases
+    if ((target === 'power-generation' || target === 'power') &&
+        (catKey === 'power' || catKey === 'power-generation' || catLabel.includes('power'))) {
+      return true;
+    }
+
+    // Marine & Shipping aliases
+    if ((target === 'marine-shipping' || target === 'marine') &&
+        (catKey === 'marine' || catKey === 'marine-shipping' || catLabel.includes('marine') || catLabel.includes('ship'))) {
+      return true;
+    }
+
+    // Oil & Gas aliases
+    if ((target === 'oil-gas' || target === 'oil') &&
+        (catKey === 'oil-gas' || catKey === 'oil' || catLabel.includes('oil'))) {
+      return true;
+    }
+
+    // Construction aliases
+    if (target === 'construction' && (catKey.includes('construct') || catLabel.includes('construct'))) {
+      return true;
+    }
+
+    // Manufacturing aliases
+    if (target === 'manufacturing' && (catKey.includes('manufactur') || catLabel.includes('manufactur'))) {
+      return true;
+    }
+
+    // Logistics aliases
+    if (target === 'logistics' && (catKey.includes('logistic') || catLabel.includes('logistic'))) {
+      return true;
+    }
+
+    return false;
+  };
+
   // Filter projects by active category
   const filteredProjects = activeFilter === 'all'
     ? projectsList
-    : projectsList.filter((p) => (p.categoryKey === activeFilter || p.category_key === activeFilter));
+    : projectsList.filter((p) => matchesCategory(p, activeFilter));
 
   return (
     <main className="proj-page">
       {/* 1. HERO BANNER */}
-      <section className="proj-hero">
+      <section className="proj-hero unified-hero">
         <div className="proj-hero-bg-container" aria-hidden="true">
           <img
             src={heroImg}
@@ -173,6 +218,18 @@ export default function Projects({ onOpenQuote }) {
             <p className="proj-hero-subtitle">
               {heroSection?.subtitle || "A showcase of our fuel supply solutions and successful partnerships across key industries in the UAE."}
             </p>
+
+            <button
+              type="button"
+              className="hero-get-in-touch-btn"
+              onClick={() => onOpenQuote()}
+            >
+              <span>Get in Touch</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" width="16" height="16" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -227,39 +284,53 @@ export default function Projects({ onOpenQuote }) {
       <section className="proj-grid-section" id="projects-grid">
         <div className="container">
           <div className="proj-cards-grid">
-            {filteredProjects.map((proj) => (
-              <article
-                key={proj.id}
-                className="proj-card reveal-on-scroll"
-              >
-                {/* Card Media with Floating Category Badge & Cut Line */}
-                <div className="proj-card-media">
-                  <img src={proj.image} alt={proj.imageAlt} loading="lazy" />
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map((proj) => (
+                <article
+                  key={proj.id}
+                  className="proj-card"
+                >
+                  {/* Card Media with Floating Category Badge & Cut Line */}
+                  <div className="proj-card-media">
+                    <img src={proj.image} alt={proj.imageAlt} loading="lazy" />
 
-                  {/* Diagonal cut line */}
-                  <svg viewBox="0 0 300 28" preserveAspectRatio="none" className="proj-card-cut" aria-hidden="true">
-                    <path d="M0 28 L300 0 L300 28 L0 28 Z" fill="#ffffff" />
-                  </svg>
+                    {/* Diagonal cut line */}
+                    <svg viewBox="0 0 300 28" preserveAspectRatio="none" className="proj-card-cut" aria-hidden="true">
+                      <path d="M0 28 L300 0 L300 28 L0 28 Z" fill="#ffffff" />
+                    </svg>
 
-                  {/* Floating White Category Badge at Top Left */}
-                  <div className="proj-category-badge" aria-hidden="true">
-                    <ProjectIcon name={proj.categoryIcon} size={15} color="#D51F26" />
-                    <span className="proj-badge-text">{proj.categoryLabel}</span>
+                    {/* Floating White Category Badge at Top Left */}
+                    <div className="proj-category-badge" aria-hidden="true">
+                      <ProjectIcon name={proj.categoryIcon} size={15} color="#D51F26" />
+                      <span className="proj-badge-text">{proj.categoryLabel}</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Card Body */}
-                <div className="proj-card-body">
-                  <h3 className="proj-card-title">{proj.title}</h3>
-                  <p className="proj-card-desc">{proj.desc}</p>
-                </div>
+                  {/* Card Body */}
+                  <div className="proj-card-body">
+                    <h3 className="proj-card-title">{proj.title}</h3>
+                    <p className="proj-card-desc">{proj.desc}</p>
+                  </div>
 
-                {/* Bottom alternating color curve accent */}
-                <svg viewBox="0 0 300 14" preserveAspectRatio="none" className="proj-card-bottom-accent" aria-hidden="true">
-                  <path d="M0 14 C130 12 240 8 300 0 L300 14 Z" fill={proj.waveColor} />
-                </svg>
-              </article>
-            ))}
+                  {/* Bottom alternating color curve accent */}
+                  <svg viewBox="0 0 300 14" preserveAspectRatio="none" className="proj-card-bottom-accent" aria-hidden="true">
+                    <path d="M0 14 C130 12 240 8 300 0 L300 14 Z" fill={proj.waveColor} />
+                  </svg>
+                </article>
+              ))
+            ) : (
+              <div className="proj-empty-state" style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '48px 20px' }}>
+                <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '16px' }}>No projects found in this category.</p>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => setActiveFilter('all')}
+                  style={{ display: 'inline-flex', padding: '10px 22px', borderRadius: '9999px' }}
+                >
+                  View All Projects
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>

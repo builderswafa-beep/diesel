@@ -6,9 +6,17 @@ import PartnerCtaBanner from '../components/PartnerCtaBanner';
 
 export default function Contact({ onOpenQuote }) {
   useScrollReveal();
-  const { pageSections } = useCms();
+  const { pageSections, settings } = useCms();
   const heroSec = pageSections?.['contact.hero'];
   const heroImg = heroSec?.image_url || '/images/contact-hero-right.jpg';
+
+  const phone = settings?.phone || '+971 6 748 9138';
+  const email = settings?.email || 'info@dubaidiesel.ae';
+  const address = settings?.address || '9FXX+JF2 - Al Jerf 2 - Ajman - United Arab Emirates';
+  const workingHours = settings?.working_hours || 'Mon – Fri: 8:00 AM – 6:00 PM';
+  const mapEmbedUrl =
+    settings?.map_embed_url ||
+    'https://maps.google.com/maps?q=9FXX%2BJF2+-+Al+Jerf+2+-+Ajman+-+United+Arab+Emirates&t=&z=15&ie=UTF8&iwloc=&output=embed';
 
   useEffect(() => {
     document.title = 'Contact Us | Dubai Diesel Trading LLC — Fuel Supply in UAE';
@@ -72,7 +80,7 @@ export default function Contact({ onOpenQuote }) {
   return (
     <main className="contact-page">
       {/* 1. HERO SECTION */}
-      <section className="contact-hero-wrap">
+      <section className="contact-hero-wrap unified-hero">
         <div className="contact-hero-backdrop" aria-hidden="true">
           <img
             src={heroImg}
@@ -142,7 +150,7 @@ export default function Contact({ onOpenQuote }) {
               </div>
               <div className="contact-strip-text">
                 <strong className="contact-strip-title">Call Us</strong>
-                <a href="tel:+97141234567" className="contact-strip-val">+971 4 123 4567</a>
+                <a href={`tel:${phone.replace(/\s+/g, '')}`} className="contact-strip-val">{phone}</a>
               </div>
             </div>
 
@@ -174,7 +182,7 @@ export default function Contact({ onOpenQuote }) {
               </div>
               <div className="contact-strip-text">
                 <strong className="contact-strip-title">Office Location</strong>
-                <span className="contact-strip-val">Dubai, United Arab Emirates</span>
+                <span className="contact-strip-val">{address}</span>
               </div>
             </div>
 
@@ -231,7 +239,7 @@ export default function Contact({ onOpenQuote }) {
                     </div>
                     <div className="office-info-text">
                       <strong className="office-name">Dubai Diesel Trading L.L.C.</strong>
-                      <span className="office-city">Dubai, United Arab Emirates</span>
+                      <span className="office-city">{address}</span>
                     </div>
                   </div>
 
@@ -243,7 +251,7 @@ export default function Contact({ onOpenQuote }) {
                       </svg>
                     </div>
                     <div className="office-info-text">
-                      <a href="tel:+97141234567" className="office-link">+971 4 123 4567</a>
+                      <a href={`tel:${phone.replace(/\s+/g, '')}`} className="office-link">{phone}</a>
                     </div>
                   </div>
 
@@ -274,14 +282,19 @@ export default function Contact({ onOpenQuote }) {
                   </div>
                 </div>
 
-                {/* Map Graphic Box */}
+                {/* Interactive Map Iframe */}
                 <div className="office-map-card">
-                  <img
-                    src="/images/contact-map-graphic.jpg"
-                    alt="Dubai Diesel Trading LLC location map"
-                    className="office-map-img"
+                  <iframe
+                    src={mapEmbedUrl}
+                    width="100%"
+                    height="210"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
                     loading="lazy"
-                  />
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Dubai Diesel Trading LLC Head Office Location Map"
+                    className="office-map-iframe"
+                  ></iframe>
                 </div>
               </div>
             </div>

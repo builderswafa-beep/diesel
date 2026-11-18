@@ -303,7 +303,7 @@ export default function ServiceDetail({ onOpenQuote }) {
   return (
     <main className="dtl-page">
       {/* 1. HERO BANNER WITH SIGNATURE SWOOSH */}
-      <section className="dtl-hero">
+      <section className="dtl-hero unified-hero">
         <div className="dtl-hero-bg-container" aria-hidden="true">
           <img
             src={heroImg}
@@ -330,6 +330,18 @@ export default function ServiceDetail({ onOpenQuote }) {
             </div>
 
             <p className="dtl-hero-subtitle">{heroSubtitle}</p>
+
+            <button
+              type="button"
+              className="hero-get-in-touch-btn"
+              onClick={() => onOpenQuote(data.productKey)}
+            >
+              <span>Get in Touch</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" width="16" height="16" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
           </div>
         </div>
 

@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useCms } from '../context/CmsContext';
 import PartnerCtaBanner from '../components/PartnerCtaBanner';
 
 export default function Industries({ onOpenQuote }) {
   useScrollReveal();
-  const navigate = useNavigate();
   const { pageSections } = useCms();
   const heroSec = pageSections?.['industries.hero'];
   const heroImg = heroSec?.image_url || '/images/industries-hero-panorama-exact.jpg';
@@ -260,15 +259,6 @@ export default function Industries({ onOpenQuote }) {
               <article
                 key={item.id}
                 className="ind-card-modern"
-                onClick={() => navigate(`/industries/${item.id}`)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    navigate(`/industries/${item.id}`);
-                  }
-                }}
-                style={{ cursor: 'pointer' }}
               >
                 <div className="ind-card-media">
                   <img src={item.image} alt={item.title} loading="lazy" />

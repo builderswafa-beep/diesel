@@ -551,6 +551,58 @@ export async function handleApiRequest(req, res) {
       return true;
     }
 
+    // 11. CONTACT MESSAGES
+    if (pathname.includes('/contact')) {
+      const { name, email, phone, subject, message } = body;
+      if (!name || !email || !message) {
+        res.statusCode = 400;
+        res.end(JSON.stringify({ success: false, error: 'Please provide name, email, and message' }));
+        return true;
+      }
+      const [result] = await pool.query(
+        'INSERT INTO contact_messages (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)',
+        [name, email, phone || '', subject || 'Website Contact Inquiry', message]
+      );
+      res.end(JSON.stringify({
+        success: true,
+        message: 'Thank you! Your message has been received. Our team will get back to you shortly.',
+        id: result.insertId
+      }));
+      return true;
+    }
+
+    // 12. QUOTE REQUESTS
+    if (pathname.includes('/quote')) {
+      const company_name = body.company || body.company_name || '';
+      const contact_person = body.contact || body.contact_person || '';
+      const email = body.email || '';
+      const phone = body.phone || '';
+      const fuel_product = body.product || body.fuel_product || 'Diesel Fuel';
+      const quantity = body.volume || body.quantity || '';
+      const delivery_location = body.location || body.delivery_location || '';
+      const emirate = body.emirate || 'Dubai';
+      const notes = body.notes || body.message || '';
+
+      if (!contact_person || !email || !phone) {
+        res.statusCode = 400;
+        res.end(JSON.stringify({ success: false, error: 'Please provide contact person, email, and phone number' }));
+        return true;
+      }
+
+      const [result] = await pool.query(
+        `INSERT INTO quote_requests 
+         (company_name, contact_person, email, phone, fuel_product, quantity, delivery_location, emirate, notes) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [company_name, contact_person, email, phone, fuel_product, quantity, delivery_location, emirate, notes]
+      );
+      res.end(JSON.stringify({
+        success: true,
+        message: 'Quote request submitted successfully! An account manager will contact you within 15 minutes.',
+        id: result.insertId
+      }));
+      return true;
+    }
+
     res.statusCode = 404;
     res.end(JSON.stringify({ success: false, error: 'Endpoint not found' }));
     return true;

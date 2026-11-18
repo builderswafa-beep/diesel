@@ -153,7 +153,7 @@ export default function Services({ onOpenQuote }) {
   return (
     <main className="srv-page">
       {/* 1. HERO SECTION */}
-      <section className="srv-hero">
+      <section className="srv-hero unified-hero">
         <div className="srv-hero-bg-container" aria-hidden="true">
           <img
             src={heroImg}

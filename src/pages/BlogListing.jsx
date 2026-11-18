@@ -71,6 +71,18 @@ export default function BlogListing({ onOpenQuote }) {
             <p className="proj-hero-subtitle">
               {heroSec?.subtitle || 'Industry insights, fuel market updates, and expert perspectives from the Dubai Diesel Trading L.L.C. technical team.'}
             </p>
+
+            <button
+              type="button"
+              className="hero-get-in-touch-btn"
+              onClick={() => onOpenQuote()}
+            >
+              <span>Get in Touch</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" width="16" height="16" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
           </div>
 
           {/* Bottom Asymmetric Flowing Red & Navy Wave */}

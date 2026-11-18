@@ -2,17 +2,116 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCms } from '../context/CmsContext';
 
+const DEFAULT_QUICK_LINKS = [
+  { label: 'Home', url: '/' },
+  { label: 'About Us', url: '/about' },
+  { label: 'Our Projects', url: '/projects' },
+  { label: 'Our Services', url: '/services' },
+  { label: 'Industries', url: '/industries' },
+  { label: 'Gallery', url: '/gallery' },
+  { label: 'Blog', url: '/blog' },
+  { label: 'Contact Us', url: '/contact' },
+];
+
+const DEFAULT_SERVICE_LINKS = [
+  { label: 'Diesel Supply', url: '/services/diesel-supply' },
+  { label: 'Industrial Fuel', url: '/services/industrial-fuel' },
+  { label: 'Marine Fuel', url: '/services/marine-fuel' },
+  { label: 'Generator Fuel', url: '/services/generator-fuel' },
+  { label: 'Bulk Fuel Supply', url: '/services/bulk-fuel-supply' },
+  { label: 'Fuel Storage & Distribution', url: '/services/storage-distribution' },
+];
+
+const DEFAULT_LEGAL_LINKS = [
+  { label: 'Privacy Policy', url: '#contact' },
+  { label: 'Terms of Use', url: '#contact' },
+  { label: 'Sitemap', url: '#contact' },
+];
+
+function parseLinks(value, fallback) {
+  if (!value) return fallback;
+  try {
+    const parsed = typeof value === 'string' ? JSON.parse(value) : value;
+    if (Array.isArray(parsed)) {
+      return parsed
+        .filter((item) => item && item.label)
+        .map((item) => ({ label: item.label, url: item.url || '#' }));
+    }
+  } catch {
+    return fallback;
+  }
+  return fallback;
+}
+
 export default function Footer({ onOpenQuote }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { settings } = useCms();
 
-  const phone = settings?.phone || '+971 4 123 4567';
+  const phone = settings?.phone || '+971 6 748 9138';
   const email = settings?.email || 'info@dubaidiesel.ae';
-  const address = settings?.address || 'Dubai, United Arab Emirates';
+  const address = settings?.address || '9FXX+JF2 - Al Jerf 2 - Ajman - United Arab Emirates';
   const workingHours = settings?.working_hours || 'Mon - Fri: 8:00 AM - 6:00 PM';
   const copyText = settings?.copyright_text || '© 2026 Dubai Diesel Trading L.L.C. All Rights Reserved.';
+  const brandArabic = settings?.footer_brand_arabic || 'دبي لتجارة الديزل';
+  const brandName = settings?.footer_brand_name || 'DUBAI DIESEL';
+  const brandSubtitle = settings?.footer_brand_subtitle || 'TRADING LLC';
+  const description =
+    settings?.footer_description ||
+    'A trusted supplier of diesel and fuel solutions across the UAE, serving construction, industrial, marine, logistics, and power sectors with reliability and quality.';
+  const quickHeading = settings?.footer_quick_heading || 'Quick Links';
+  const servicesHeading = settings?.footer_services_heading || 'Our Services';
+  const contactHeading = settings?.footer_contact_heading || 'Contact Info';
+  const terminalImage = settings?.footer_image_url || '/images/footer-terminal-exact.png';
+  const quickLinks = parseLinks(settings?.footer_quick_links, DEFAULT_QUICK_LINKS);
+  const serviceLinks = parseLinks(settings?.footer_service_links, DEFAULT_SERVICE_LINKS);
+  const legalLinks = parseLinks(settings?.footer_legal_links, DEFAULT_LEGAL_LINKS);
+  const socialLinks = [
+    {
+      name: 'LinkedIn',
+      url: settings?.linkedin_url || '#contact',
+      icon: <span className="footer-in-text">in</span>,
+    },
+    {
+      name: 'Instagram',
+      url: settings?.instagram_url || '#contact',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" width="15" height="15" aria-hidden="true">
+          <rect width="18" height="18" x="3" y="3" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      ),
+    },
+    {
+      name: 'YouTube',
+      url: settings?.youtube_url || '#contact',
+      icon: (
+        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true">
+          <polygon points="10 8 16 12 10 16 10 8" />
+        </svg>
+      ),
+    },
+  ];
 
+  const renderFooterLink = (link) => {
+    const url = link.url || '#';
+    if (url.startsWith('/')) {
+      return <Link to={url}>{link.label}</Link>;
+    }
+    if (url.startsWith('#')) {
+      return (
+        <a href={url} onClick={(e) => handleNavClick(e, url)}>
+          {link.label}
+        </a>
+      );
+    }
+    return (
+      <a href={url} target="_blank" rel="noopener noreferrer">
+        {link.label}
+      </a>
+    );
+  };
 
   const handleNavClick = (e, targetHash) => {
     e.preventDefault();
@@ -56,99 +155,60 @@ export default function Footer({ onOpenQuote }) {
               </svg>
               <span className="brand-sep dark" aria-hidden="true"></span>
               <span className="brand-text">
-                <span className="brand-arabic footer-arabic" dir="rtl" lang="ar">دبي لتجارة الديزل</span>
-                <span className="brand-english white">DUBAI DIESEL</span>
-                <span className="footer-brand-sub">TRADING LLC</span>
+                <span className="brand-arabic footer-arabic" dir="rtl" lang="ar">{brandArabic}</span>
+                <span className="brand-english white">{brandName}</span>
+                <span className="footer-brand-sub">{brandSubtitle}</span>
               </span>
             </Link>
 
-            <p className="footer-desc">
-              A trusted supplier of diesel and fuel solutions across the UAE, serving construction,
-              industrial, marine, logistics, and power sectors with reliability and quality.
-            </p>
+            <p className="footer-desc">{description}</p>
 
             <span className="footer-brand-rule" aria-hidden="true"></span>
 
             <div className="footer-socials">
-              <a href="#contact" aria-label="LinkedIn" className="footer-social-btn">
-                <span className="footer-in-text">in</span>
-              </a>
-              <a href="#contact" aria-label="Instagram" className="footer-social-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" width="15" height="15" aria-hidden="true">
-                  <rect width="18" height="18" x="3" y="3" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-                </svg>
-              </a>
-              <a href="#contact" aria-label="YouTube" className="footer-social-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true">
-                  <polygon points="10 8 16 12 10 16 10 8" />
-                </svg>
-              </a>
+              {socialLinks
+                .filter((social) => social.url)
+                .map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    aria-label={social.name}
+                    className="footer-social-btn"
+                    {...(/^https?:\/\//i.test(social.url)
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
+                  >
+                    {social.icon}
+                  </a>
+                ))}
             </div>
           </div>
 
           {/* Col 2: Quick Links */}
           <div className="footer-col">
-            <h4>Quick Links</h4>
+            <h4>{quickHeading}</h4>
             <span className="footer-heading-rule" aria-hidden="true"></span>
             <ul className="footer-chevron-list">
-              <li>
-                <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About Us</Link>
-              </li>
-              <li>
-                <Link to="/projects">Our Projects</Link>
-              </li>
-              <li>
-                <Link to="/services">Our Services</Link>
-              </li>
-              <li>
-                <Link to="/industries">Industries</Link>
-              </li>
-              <li>
-                <Link to="/gallery">Gallery</Link>
-              </li>
-              <li>
-                <Link to="/blog">Blog</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contact Us</Link>
-              </li>
+              {quickLinks.map((link, index) => (
+                <li key={`${link.label}-${index}`}>{renderFooterLink(link)}</li>
+              ))}
             </ul>
           </div>
 
           {/* Col 3: Our Services */}
           <div className="footer-col">
-            <h4>Our Services</h4>
+            <h4>{servicesHeading}</h4>
             <span className="footer-heading-rule" aria-hidden="true"></span>
             <ul className="footer-chevron-list">
-              <li>
-                <Link to="/services/diesel-supply">Diesel Supply</Link>
-              </li>
-              <li>
-                <Link to="/services/industrial-fuel">Industrial Fuel</Link>
-              </li>
-              <li>
-                <Link to="/services/marine-fuel">Marine Fuel</Link>
-              </li>
-              <li>
-                <Link to="/services/generator-fuel">Generator Fuel</Link>
-              </li>
-              <li>
-                <Link to="/services/bulk-fuel-supply">Bulk Fuel Supply</Link>
-              </li>
-              <li>
-                <Link to="/services/storage-distribution">Fuel Storage &amp; Distribution</Link>
-              </li>
+              {serviceLinks.map((link, index) => (
+                <li key={`${link.label}-${index}`}>{renderFooterLink(link)}</li>
+              ))}
             </ul>
           </div>
 
           {/* Col 4: Contact Info */}
           <div className="footer-col footer-col-contact">
-            <h4>Contact Info</h4>
+            <h4>{contactHeading}</h4>
             <span className="footer-heading-rule" aria-hidden="true"></span>
             <ul className="footer-contact-list">
               <li>
@@ -192,20 +252,23 @@ export default function Footer({ onOpenQuote }) {
       </div>
 
       {/* Footer Right Terminal Tank Graphic from Mockup - Seamlessly Blended */}
-      <div className="footer-tank-graphic" aria-hidden="true">
-        <img src="/images/footer-terminal-exact.png" alt="Dubai Diesel Storage Terminal" />
-      </div>
+      {terminalImage && (
+        <div className="footer-tank-graphic" aria-hidden="true">
+          <img src={terminalImage} alt="Dubai Diesel Storage Terminal" />
+        </div>
+      )}
 
       {/* Dark Midnight Bottom Copyright & Legal Bar */}
       <div className="footer-bottom-bar">
         <div className="container footer-bottom-inner">
-          <p>&copy; 2026 Dubai Diesel Trading L.L.C. All Rights Reserved.</p>
+          <p>{copyText}</p>
           <div className="footer-legal-links">
-            <a href="#contact">Privacy Policy</a>
-            <span aria-hidden="true">|</span>
-            <a href="#contact">Terms of Use</a>
-            <span aria-hidden="true">|</span>
-            <a href="#contact">Sitemap</a>
+            {legalLinks.map((link, index) => (
+              <React.Fragment key={`${link.label}-${index}`}>
+                {index > 0 && <span aria-hidden="true">|</span>}
+                {renderFooterLink(link)}
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </div>

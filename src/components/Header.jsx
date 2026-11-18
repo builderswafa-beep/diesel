@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCms } from '../context/CmsContext';
 
@@ -9,6 +9,34 @@ export default function Header({ onOpenQuote, onOpenSearch }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { settings } = useCms();
+  const dropdownRef = useRef(null);
+  const dropdownPinnedRef = useRef(false);
+
+  const closeDropdown = useCallback(() => {
+    dropdownPinnedRef.current = false;
+    setServicesDropdown(false);
+  }, []);
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        closeDropdown();
+      }
+    };
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') closeDropdown();
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [closeDropdown]);
+
+  useEffect(() => {
+    closeDropdown();
+  }, [location.pathname, closeDropdown]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,9 +47,9 @@ export default function Header({ onOpenQuote, onOpenSearch }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const phone = settings?.phone || '+971 4 123 4567';
+  const phone = settings?.phone || '+971 6 748 9138';
   const email = settings?.email || 'info@dubaidiesel.ae';
-  const address = settings?.address || 'Dubai, United Arab Emirates';
+  const address = settings?.address || '9FXX+JF2 - Al Jerf 2 - Ajman - United Arab Emirates';
   const workingHours = settings?.working_hours || 'Mon - Fri: 8:00 AM - 6:00 PM';
 
   const handleNavClick = (e, targetHash) => {
@@ -143,54 +171,58 @@ export default function Header({ onOpenQuote, onOpenSearch }) {
             </Link>
 
             <div
-              className="nav-dropdown-wrap"
-              onMouseEnter={() => setServicesDropdown(true)}
-              onMouseLeave={() => setServicesDropdown(false)}
+              ref={dropdownRef}
+              className={`nav-dropdown-wrap ${servicesDropdown ? 'is-open' : ''}`}
+              onMouseEnter={() => {
+                if (!dropdownPinnedRef.current) setServicesDropdown(true);
+              }}
+              onMouseLeave={() => {
+                if (!dropdownPinnedRef.current) setServicesDropdown(false);
+              }}
             >
-              <Link
-                to="/services"
-                className={`nav-link ${location.pathname.startsWith('/services') ? 'is-active' : ''}`}
+              <button
+                type="button"
+                className={`nav-link nav-dropdown-toggle ${location.pathname.startsWith('/services') ? 'is-active' : ''}`}
+                aria-haspopup="true"
+                aria-expanded={servicesDropdown}
+                onClick={() => {
+                  dropdownPinnedRef.current = !dropdownPinnedRef.current;
+                  setServicesDropdown(dropdownPinnedRef.current);
+                }}
               >
                 <span>Our Services</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" width="12" height="12" style={{ marginLeft: '4px', verticalAlign: 'middle', display: 'inline-block' }} aria-hidden="true">
+                <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" width="12" height="12" style={{ marginLeft: '4px', verticalAlign: 'middle', display: 'inline-block' }} aria-hidden="true">
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
-              </Link>
+              </button>
 
               {servicesDropdown && (
-                <div className="dropdown-menu nav-dropdown-menu" style={{ opacity: 1, visibility: 'visible', transform: 'translateY(0)' }}>
-                  <Link to="/services/diesel-supply" className="dropdown-item" onClick={() => setServicesDropdown(false)}>
+                <div className="dropdown-menu nav-dropdown-menu">
+                  <Link to="/services/diesel-supply" className="dropdown-item" onClick={closeDropdown}>
                     Diesel Supply
                   </Link>
-                  <Link to="/services/industrial-fuel" className="dropdown-item" onClick={() => setServicesDropdown(false)}>
+                  <Link to="/services/industrial-fuel" className="dropdown-item" onClick={closeDropdown}>
                     Industrial Fuel
                   </Link>
-                  <Link to="/services/marine-fuel" className="dropdown-item" onClick={() => setServicesDropdown(false)}>
+                  <Link to="/services/marine-fuel" className="dropdown-item" onClick={closeDropdown}>
                     Marine Fuel
                   </Link>
-                  <Link to="/services/generator-fuel" className="dropdown-item" onClick={() => setServicesDropdown(false)}>
+                  <Link to="/services/generator-fuel" className="dropdown-item" onClick={closeDropdown}>
                     Generator Fuel
                   </Link>
-                  <Link to="/services/bulk-fuel-supply" className="dropdown-item" onClick={() => setServicesDropdown(false)}>
+                  <Link to="/services/bulk-fuel-supply" className="dropdown-item" onClick={closeDropdown}>
                     Bulk Fuel Supply
                   </Link>
-                  <Link to="/services/storage-distribution" className="dropdown-item" onClick={() => setServicesDropdown(false)}>
+                  <Link to="/services/storage-distribution" className="dropdown-item" onClick={closeDropdown}>
                     Fuel Storage & Distribution
                   </Link>
                   <div className="dropdown-divider"></div>
-                  <Link to="/services" className="dropdown-all" onClick={() => setServicesDropdown(false)}>
+                  <Link to="/services" className="dropdown-all" onClick={closeDropdown}>
                     Explore All Services &rarr;
                   </Link>
                 </div>
               )}
             </div>
-
-            <Link
-              to="/industries"
-              className={`nav-link ${location.pathname === '/industries' || location.pathname === '/sectors' ? 'is-active' : ''}`}
-            >
-              Industries
-            </Link>
 
             <Link
               to="/gallery"
@@ -286,13 +318,6 @@ export default function Header({ onOpenQuote, onOpenSearch }) {
               onClick={() => setMobileMenuOpen(false)}
             >
               Our Services
-            </Link>
-            <Link
-              to="/industries"
-              className={`mobile-link ${location.pathname === '/industries' ? 'is-active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Industries
             </Link>
             <Link
               to="/gallery"

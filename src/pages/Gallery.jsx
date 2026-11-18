@@ -188,7 +188,7 @@ export default function Gallery({ onOpenQuote }) {
   return (
     <main className="gallery-page">
       {/* 1. HERO BANNER */}
-      <section className="proj-hero">
+      <section className="proj-hero unified-hero">
         <div className="proj-hero-bg-container" aria-hidden="true">
           <img
             src={heroImg}
@@ -221,6 +221,18 @@ export default function Gallery({ onOpenQuote }) {
             <p className="proj-hero-subtitle">
               {heroSec?.subtitle || 'A visual showcase of our fuel storage terminals, dedicated road tanker fleet, and professional fueling operations across the UAE.'}
             </p>
+
+            <button
+              type="button"
+              className="hero-get-in-touch-btn"
+              onClick={() => onOpenQuote()}
+            >
+              <span>Get in Touch</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" width="16" height="16" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
           </div>
 
           {/* Bottom Asymmetric Flowing Red & Navy Wave */}

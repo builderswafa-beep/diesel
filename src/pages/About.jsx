@@ -96,7 +96,7 @@ export default function About({ onOpenQuote }) {
   return (
     <main>
       {/* ABOUT HERO */}
-      <section className="abp-hero">
+      <section className="abp-hero unified-hero">
         {/* Full-bleed Backdrop: Dubai Diesel Terminal & Office Facility with Left Navy Fade */}
         <div className="abp-hero-media" aria-hidden="true">
           <img
@@ -146,6 +146,17 @@ export default function About({ onOpenQuote }) {
               </p>
 
               <div className="abp-hero-ctas">
+                <button
+                  type="button"
+                  className="abp-profile-btn"
+                  onClick={() => onOpenQuote()}
+                >
+                  <span>Get in Touch</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" width="16" height="16" aria-hidden="true">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
                 <a
                   href="/assets/Dubai-Diesel-Trading-Profile.pdf"
                   download="Dubai-Diesel-Trading-Profile.pdf"

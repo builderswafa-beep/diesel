@@ -11,9 +11,10 @@ export function CmsProvider({ children }) {
   const [settings, setSettings] = useState({
     company_name: 'Dubai Diesel Trading L.L.C.',
     company_name_ar: 'دبي لتجارة الديزل ذ.م.م.',
-    phone: '+971 4 123 4567',
+    phone: '+971 6 748 9138',
     email: 'info@dubaidiesel.ae',
-    address: 'Dubai, United Arab Emirates',
+    address: '9FXX+JF2 - Al Jerf 2 - Ajman - United Arab Emirates',
+    map_embed_url: 'https://maps.google.com/maps?q=9FXX%2BJF2+-+Al+Jerf+2+-+Ajman+-+United+Arab+Emirates&t=&z=15&ie=UTF8&iwloc=&output=embed',
     working_hours: 'Mon - Fri: 8:00 AM - 6:00 PM',
     whatsapp_number: '+971501234567',
     whatsapp_enabled: 'true',
@@ -22,6 +23,38 @@ export function CmsProvider({ children }) {
     youtube_url: 'https://youtube.com',
     copyright_text: '© 2026 Dubai Diesel Trading L.L.C. All Rights Reserved.',
     site_tagline: 'Leading Fuel Solutions & Distribution in the UAE',
+    footer_brand_arabic: 'دبي لتجارة الديزل',
+    footer_brand_name: 'DUBAI DIESEL',
+    footer_brand_subtitle: 'TRADING LLC',
+    footer_description:
+      'A trusted supplier of diesel and fuel solutions across the UAE, serving construction, industrial, marine, logistics, and power sectors with reliability and quality.',
+    footer_quick_heading: 'Quick Links',
+    footer_services_heading: 'Our Services',
+    footer_contact_heading: 'Contact Info',
+    footer_image_url: '/images/footer-terminal-exact.png',
+    footer_quick_links: JSON.stringify([
+      { label: 'Home', url: '/' },
+      { label: 'About Us', url: '/about' },
+      { label: 'Our Projects', url: '/projects' },
+      { label: 'Our Services', url: '/services' },
+      { label: 'Industries', url: '/industries' },
+      { label: 'Gallery', url: '/gallery' },
+      { label: 'Blog', url: '/blog' },
+      { label: 'Contact Us', url: '/contact' },
+    ]),
+    footer_service_links: JSON.stringify([
+      { label: 'Diesel Supply', url: '/services/diesel-supply' },
+      { label: 'Industrial Fuel', url: '/services/industrial-fuel' },
+      { label: 'Marine Fuel', url: '/services/marine-fuel' },
+      { label: 'Generator Fuel', url: '/services/generator-fuel' },
+      { label: 'Bulk Fuel Supply', url: '/services/bulk-fuel-supply' },
+      { label: 'Fuel Storage & Distribution', url: '/services/storage-distribution' },
+    ]),
+    footer_legal_links: JSON.stringify([
+      { label: 'Privacy Policy', url: '#contact' },
+      { label: 'Terms of Use', url: '#contact' },
+      { label: 'Sitemap', url: '#contact' },
+    ]),
   });
 
   const [projects, setProjects] = useState(staticProjects);
