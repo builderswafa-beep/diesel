@@ -17,7 +17,6 @@ export default function GalleryManager() {
     { key: 'terminals', label: 'Storage Terminals' },
     { key: 'fleet', label: 'Delivery Fleet' },
     { key: 'industrial', label: 'Industrial & Sites' },
-    { key: 'marine', label: 'Marine Operations' },
   ];
 
   const getCategoryLabel = (catKey) => {
@@ -25,9 +24,10 @@ export default function GalleryManager() {
     return found ? found.label : (catKey || 'General');
   };
 
-  const filtered = activeCategory === 'all'
+  const filtered = (activeCategory === 'all'
     ? gallery
-    : gallery.filter((g) => g.category === activeCategory);
+    : gallery.filter((g) => g.category === activeCategory)
+  ).filter((g) => g.category !== 'marine');
 
   const handleAddNew = () => {
     setEditingItem({
@@ -331,7 +331,6 @@ export default function GalleryManager() {
                       <option value="terminals">Storage Terminals</option>
                       <option value="fleet">Delivery Fleet</option>
                       <option value="industrial">Industrial &amp; Sites</option>
-                      <option value="marine">Marine Operations</option>
                     </select>
                   </div>
 

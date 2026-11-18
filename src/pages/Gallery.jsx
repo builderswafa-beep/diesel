@@ -58,14 +58,6 @@ export const galleryItems = [
     caption: 'Continuous industrial gas oil delivery supporting 24/7 manufacturing plants, boilers, and production lines.'
   },
   {
-    id: 'gallery-7',
-    title: 'Marine Bunkering & Port Offshore Fuel Supply',
-    category: 'Marine Operations',
-    categoryId: 'marine',
-    image: '/images/service-marine.jpg',
-    caption: 'Marine Gas Oil (MGO) bunkering solutions for ocean cargo vessels, tugboats, and offshore platforms.'
-  },
-  {
     id: 'gallery-8',
     title: 'Standby Diesel Generators for Emergency Backup Power',
     category: 'Industrial & Sites',
@@ -112,7 +104,6 @@ export const galleryCategories = [
   { id: 'terminals', label: 'Storage Terminals' },
   { id: 'fleet', label: 'Delivery Fleet' },
   { id: 'industrial', label: 'Industrial & Sites' },
-  { id: 'marine', label: 'Marine Operations' }
 ];
 
 export default function Gallery({ onOpenQuote }) {
@@ -132,19 +123,20 @@ export default function Gallery({ onOpenQuote }) {
     terminals: 'Storage Terminals',
     fleet: 'Delivery Fleet',
     industrial: 'Industrial & Sites',
-    marine: 'Marine Operations',
   };
 
   const activeGalleryItems = gallery && gallery.length > 0
-    ? gallery.map((g) => ({
-        id: g.id,
-        title: g.title,
-        category: categoryNameMap[g.category] || g.category || 'General',
-        categoryId: g.category,
-        image: g.image_url || g.image,
-        caption: g.caption || '',
-      }))
-    : galleryItems;
+    ? gallery
+        .filter((g) => g.category !== 'marine')
+        .map((g) => ({
+          id: g.id,
+          title: g.title,
+          category: categoryNameMap[g.category] || g.category || 'General',
+          categoryId: g.category,
+          image: g.image_url || g.image,
+          caption: g.caption || '',
+        }))
+    : galleryItems.filter((item) => item.categoryId !== 'marine');
 
   const filteredItems = activeCategory === 'all'
     ? activeGalleryItems
